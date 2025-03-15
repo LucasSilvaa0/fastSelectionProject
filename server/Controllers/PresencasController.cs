@@ -16,18 +16,25 @@ public class PresencasController : ControllerBase
     }
 
     // GET: api/Presencas/1
-    [HttpGet("{id_workshop}")]
-    public async Task<IActionResult> GetWorkshopPresencas(int id_workshop)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetWorkshopPresencas(int id)
     {
-        return Ok(await (from p in _context.Presenca
-                         from c in _context.Colaborador
-                         where p.Id_workshop == id_workshop
-                         where p.Id_colaborador == c.Id
-                         select new
-                         {
-                             c.Id,
-                             c.Nome
-                         }).ToListAsync());
+        Colaborador? colaborador = await _context.Colaborador.FindAsync(id);
+
+        if (colaborador == null) return NotFound();
+
+        var workshops = _context.Workshop.Where(w => w.Data_realizacao >= colaborador.data_inicial && (w.Data_realizacao <= colaborador.data_final || colaborador.data_final == DateOnly.MinValue));
+
+        int total = workshops.Count();
+        var workshopsList = await workshops.ToListAsync();
+
+        int participacoes = _context.Presenca.Where(p => p.Id_colaborador == colaborador.Id).Count();
+
+        return Ok(new
+        {
+            total,
+            participacoes
+        });
     }
 
 
