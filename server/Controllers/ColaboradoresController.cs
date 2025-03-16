@@ -19,14 +19,21 @@ public class ColaboradoresController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetColaboradores()
     {
-        return Ok(await _context.Colaborador.ToListAsync());
+        return Ok(await _context.Colaborador.OrderBy(c => c.data_final).ToListAsync());
     }
 
-    // GET: api/Colaboradores/20-10-2021
-    [HttpGet("{data_atual}")]
+    // GET: api/Colaboradores/atuais/20-10-2021
+    [HttpGet("atuais/{data_atual}")]
     public async Task<IActionResult> GetColaboradoresAtuais(DateOnly data_atual)
     {
         return Ok(await _context.Colaborador.Where(c => c.data_inicial <= data_atual && (c.data_final == DateOnly.MinValue || c.data_final >= data_atual)).ToListAsync());
+    }
+
+    // GET: api/Colaboradores/passados
+    [HttpGet("passados")]
+    public async Task<IActionResult> GetColaboradoresPassados()
+    {
+        return Ok(await _context.Colaborador.Where(c => c.data_final != DateOnly.MinValue).ToListAsync());
     }
 
     // POST: api/Colaboradores
@@ -42,7 +49,7 @@ public class ColaboradoresController : ControllerBase
 
     // DELETE: api/Colaboradores
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteColaborador(Colaborador id)
+    public async Task<IActionResult> DeleteColaborador(int id)
     {
         var colaborador = await _context.Colaborador.FindAsync(id);
         if (colaborador == null)

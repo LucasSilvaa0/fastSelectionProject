@@ -9,10 +9,23 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30)),
         mySqlOptions => mySqlOptions.EnableRetryOnFailure(maxRetryCount: 2)));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost3000",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+});
+
 Console.WriteLine(connectionString);
 
 builder.Services.AddControllers();
 var app = builder.Build();
+
+app.UseCors("AllowLocalhost3000");
 
 app.UseAuthorization();
 app.MapControllers();
