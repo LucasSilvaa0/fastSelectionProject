@@ -10,7 +10,7 @@ import {
 import { Label } from "@/components/ui/label";
 import axiosApi from "@/utils/axiosApi";
 
-async function cadasrtarColaborador() {
+async function cadastrarColaborador() {
     const nome = document.querySelector("input[type='text']").value;
     const data = document.querySelector("input[type='date']").value;
 
@@ -43,7 +43,7 @@ export default function NovoColaborador() {
                         Fechar
                     </Button>
                 </DialogClose>
-                <Button className="text-black text-base w-min cursor-pointer" variant="outline" type="button" onClick={cadasrtarColaborador}>Cadastrar</Button>
+                <Button className="text-black text-base w-min cursor-pointer" variant="outline" type="button" onClick={cadastrarColaborador}>Cadastrar</Button>
             </div>
         </DialogContent>
     )
