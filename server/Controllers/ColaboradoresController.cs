@@ -19,7 +19,7 @@ public class ColaboradoresController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetColaboradores()
     {
-        return Ok(await _context.Colaborador.OrderBy(c => c.data_final).ToListAsync());
+        return Ok(await _context.Colaborador.OrderBy(c => c.data_final).ThenBy(c => c.data_inicial).ToListAsync());
     }
 
     // GET: api/Colaboradores/atuais/20-10-2021
@@ -40,7 +40,6 @@ public class ColaboradoresController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostColaborador(Colaborador colaborador)
     {
-        colaborador.data_inicial = DateOnly.FromDateTime(DateTime.Now);
         _context.Colaborador.Add(colaborador);
         await _context.SaveChangesAsync();
 
