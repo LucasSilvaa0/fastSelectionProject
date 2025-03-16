@@ -26,14 +26,14 @@ public class ColaboradoresController : ControllerBase
     [HttpGet("atuais/{data_atual}")]
     public async Task<IActionResult> GetColaboradoresAtuais(DateOnly data_atual)
     {
-        return Ok(await _context.Colaborador.Where(c => c.data_inicial <= data_atual && (c.data_final == DateOnly.MinValue || c.data_final >= data_atual)).ToListAsync());
+        return Ok(await _context.Colaborador.Where(c => c.data_inicial <= data_atual && (c.data_final == DateOnly.MinValue || c.data_final > data_atual)).ToListAsync());
     }
 
     // GET: api/Colaboradores/passados
     [HttpGet("passados")]
     public async Task<IActionResult> GetColaboradoresPassados()
     {
-        return Ok(await _context.Colaborador.Where(c => c.data_final != DateOnly.MinValue).ToListAsync());
+        return Ok(await _context.Colaborador.Where(c => c.data_final > DateOnly.MinValue).ToListAsync());
     }
 
     // POST: api/Colaboradores
