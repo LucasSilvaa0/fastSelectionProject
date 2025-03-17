@@ -1,16 +1,6 @@
-services:
-  app:
-    build: .
-    container_name: backend-aspnet
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-    environment:
-      - ConnectionStrings__DefaultConnection=Server=db;Database=fastSelectionDatabase;User=root;Password=Admin#123;Persist Security Info=False;
-    networks:
-      - minha-rede
+version: '3.8'
 
+services:
   db:
     image: mysql:8.0
     container_name: mysql-db
@@ -22,6 +12,18 @@ services:
       - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - minha-rede
+
+  app:
+    build: .
+    container_name: backend-aspnet
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=fastSelectionDatabase;User=root;Password=Admin#123;Persist Security Info=False;
     networks:
       - minha-rede
 
