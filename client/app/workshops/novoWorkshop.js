@@ -83,7 +83,6 @@ export default function NovoWorkshop() {
                     </th>
                     <th>ID</th>
                     <th>Nome</th>
-                    <th>Email</th>
                 </tr>
                 </thead>
                 <tbody>
