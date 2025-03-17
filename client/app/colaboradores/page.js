@@ -99,7 +99,6 @@ export default function Colaboradores() {
   
 
     function Grafico() {
-        if (colaboradorGrafico === 0) return null;
 
         const { data, isLoading } = useQuery({
             queryKey: ["Presencas"],
@@ -110,7 +109,9 @@ export default function Colaboradores() {
             queryKey: ["Workshops"],
             queryFn: getQuantidadeWorkshops
         });
-        
+      
+        if (colaboradorGrafico === 0) return null;
+
         if (isLoading === 0 || data === undefined || workshops === undefined || workshops.isLoading) return null;
 
         ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
