@@ -6,10 +6,10 @@ WORKDIR /src
 COPY . .
 
 # Restaure as dependências do projeto
-RUN dotnet restore "server/server.csproj"
+RUN dotnet restore "server.csproj"
 
 # Publique o projeto
-RUN dotnet publish "server/server.csproj" -c Release -o /app/publish
+RUN dotnet publish "server.csproj" -c Release -o /app/publish
 
 # Use a imagem base do runtime do .NET para a imagem final
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
