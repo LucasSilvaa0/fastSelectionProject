@@ -5,6 +5,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Adiciona o contexto do banco de dados
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new Exception("A variável de ambiente DB_CONNECTION_STRING não foi encontrada.");
+}
+
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30)),
         mySqlOptions => mySqlOptions.EnableRetryOnFailure(maxRetryCount: 2)));
