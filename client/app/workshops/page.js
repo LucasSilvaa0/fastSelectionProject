@@ -23,15 +23,19 @@ async function getWorkshop() {
 }
 
 export default function Workshops() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["Workshops"],
+    queryFn: getWorkshop,
+  });
+
   function TabelaWorkshops() {
     const [detalhes, setDetalhes] = useState(0);
 
-    const { data, isLoading } = useQuery({
-      queryKey: ["Workshops"],
-      queryFn: getWorkshop,
-    });
-
     if (isLoading || data === undefined) return null;
+
+    if (!Array.isArray(data)) {
+      return <div>Dados inválidos</div>;
+    }
 
     return (
       <Table>
