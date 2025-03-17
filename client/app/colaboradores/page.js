@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import ComboboxDemo from "./fimColaborador";
-import { Dialog, DialogTitle, DialogTrigger, DialogContent } from "@radix-ui/react-dialog";
+import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 
 
 async function getColaboradores() {
@@ -79,7 +79,6 @@ export default function Colaboradores() {
                 ) : (
                   <TableCell className="text-right text-decoration-line: underline cursor-pointer" onClick={() => setColaboradorGrafico(colaborador.id)}>VERIFICAR</TableCell>
                 )}
-
                 
               </TableRow>
             ))}

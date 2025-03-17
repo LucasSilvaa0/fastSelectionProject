@@ -23,7 +23,7 @@ import { DialogDescription, DialogContent, DialogTitle, DialogClose } from "@rad
 import { useQuery } from "@tanstack/react-query"
 import axiosApi from "@/utils/axiosApi"
 
-async function getColaboradoresAtuais() {
+export async function getColaboradoresAtuais() {
     const dia = new Date().toISOString().split("T")[0];
     
     return await axiosApi.get(`/Colaboradores/atuais/${dia}`).then((res) => res.data);

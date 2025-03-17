@@ -38,11 +38,6 @@ export default function NovoColaborador() {
                 </Label>
             </DialogDescription>
             <div className="flex gap-6">
-                <DialogClose asChild>
-                    <Button type="button" className="cursor-pointer" variant="secondary">
-                        Fechar
-                    </Button>
-                </DialogClose>
                 <Button className="text-black text-base w-min cursor-pointer" variant="outline" type="button" onClick={cadastrarColaborador}>Cadastrar</Button>
             </div>
         </DialogContent>
