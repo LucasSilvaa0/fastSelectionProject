@@ -15,31 +15,24 @@ import axiosApi from "@/utils/axiosApi";
 import { useState } from 'react';	
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
+import DetalhesWorkshop from "./detalhesWorkshop";
+import { Drawer, DrawerTrigger } from "@/components/ui/drawer";
 
 async function getWorkshop() {
   return await axiosApi.get("/Workshops/").then((res) => res.data);
 }
 
-async function getPresencas() {
-  return await axiosApi.get("/Presencas/").then((res) => res.data);
-}
-
 export default function Workshops() {
-  const [workshopGrafico, setworkshopGrafico] = useState(0);
-
   function TabelaWorkshops() {
+    const [detalhes, setDetalhes] = useState(0);
+
     const { data, isLoading } = useQuery({
       queryKey: ["Workshops"],
       queryFn: getWorkshop,
     });
-  
-    const presencas = useQuery({
-      queryKey: ["Presencas"],
-      queryFn: getPresencas,
-    })
-  
+
     if (isLoading || data === undefined) return null;
-  
+
     return (
       <Table>
         <TableCaption><h1 className="text-xl text-green-600"><strong>LISTA DE WORKSHOPS</strong></h1></TableCaption>
@@ -47,25 +40,28 @@ export default function Workshops() {
           <TableRow>
             <TableHead>Nome</TableHead>
             <TableHead>Data de realização</TableHead>
-            <TableHead>Descrição</TableHead>
-            <TableHead className="text-right ">Participantes</TableHead>
+            <TableHead className="text-right pr-12">Detalhes</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((workshop) => (
-            <TableRow key={workshop.id}>
-              <TableCell className="font-medium"><strong>{workshop.nome}</strong></TableCell>
-              <TableCell>{workshop.data_realizacao}</TableCell>
-              <TableCell className="w-40">{workshop.descricao}</TableCell>
-  
-              {workshopGrafico === workshop.id ? (
-                    <TableCell className="text-right text-decoration-line: underline cursor-pointer" onClick={() => setworkshopGrafico(0)}>FECHAR</TableCell>
-                  ) : (
-                    <TableCell className="text-right text-decoration-line: underline cursor-pointer" onClick={() => setworkshopGrafico(workshop.id)}>VERIFICAR</TableCell>
-              )}
-  
-            </TableRow>
-          ))}
+          <Drawer>
+            {data.map((workshop) => (
+              <TableRow key={workshop.id}>
+                <TableCell className="font-medium"><strong>{workshop.nome}</strong></TableCell>
+                <TableCell>{workshop.data_realizacao}</TableCell>
+                
+                <TableCell className="text-right">
+                  <DrawerTrigger asChild>
+                    <Button className="text-decoration-line: underline cursor-pointer" onClick={() => setDetalhes(workshop.id)}>
+                      DETALHES
+                    </Button>
+                  </DrawerTrigger>
+                </TableCell>
+              </TableRow>
+            ))}
+
+            {detalhes !== 0 && <DetalhesWorkshop dados={data} id={detalhes} />}
+          </Drawer>
         </TableBody>
         <TableFooter>
           <TableRow>
@@ -80,16 +76,13 @@ export default function Workshops() {
   return (
     <div className="w-11/12 p-8 pb-14 font-[family-name:var(--font-geist-sans)] border-6 border-gray-950 bg-amber-100 rounded-lg grid gap-16">
         <div className="items-center justify-items-center">
-            <TabelaWorkshops />
+          <TabelaWorkshops />
         </div>
         <div className="flex gap-8">
             <DialogTrigger asChild>
                 <Button className="text-black text-base w-min cursor-pointer" variant="outline">REGISTRAR WORKSHOP</Button>
             </DialogTrigger>
         </div>
-        {/* <div className="items-center justify-items-center h-min">
-          <Grafico />
-        </div> */}
     </div>
   )
 }
