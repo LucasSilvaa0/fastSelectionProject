@@ -121,7 +121,7 @@ export default function Colaboradores() {
           datasets: [
             {
               label: 'Presença do colaborador nos workshops',
-              data: [data?.participacoes, data?.total, workshops?.data - data?.total],
+              data: [data?.participacoes, data?.total - data?.participacoes, workshops?.data - data?.total],
               backgroundColor: 'rgba(75, 192, 192, 0.2)',
               borderColor: 'rgba(75, 192, 192, 1)',
               borderWidth: 3,
