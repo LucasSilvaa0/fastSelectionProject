@@ -35,11 +35,16 @@ Para conseguir rodar esse projeto, primeiro pegue o código do github(usando "gi
 
 Frontend: entre na pasta "/client", use o comando "npm i ." e depois o comando "npm run dev". Para entrar no site, vá ao url "http://localhost:3000/".
 
-Backend: entre na pasta "/server", use o comando "docker-compose up --build" e depois o comando "dotnet run".
+Backend: use no terminal o comando "[System.Environment]::SetEnvironmentVariable("DB_CONNECTION_STRING", "server=localhost;port=3306;database=fastselectiondatabase;user=root;password=Admin#123;", "User")", depois entre na pasta "/server" e use o comando "dotnet run".
 
-Banco de dados: caso o banco de dados ainda não esteja com nenhuma tabela(acho que estará assim), conecte ao banco de dados no terminal usando "mysql -h localhost -u root -p fastSelectionDatabase", depois complete com a senha "Admin#123", depois crie as 3 tabelas com as funções a seguir:
+(observação: para isso funcionar, precisa existir um usuário chamado root e senha "Admin#123" no seu MySQL)
+
+Banco de dados: para ser mais direto, vá ao MySQL workbench e rode os comandos:
 
 """
+CREATE DATABASE fastSelectionDatabase;
+use fastSelectionDatabase;
+
 CREATE TABLE Colaborador (
 	id int PRIMARY KEY auto_increment,
     nome VARCHAR(50),
