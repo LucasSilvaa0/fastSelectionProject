@@ -41,6 +41,10 @@ export default function DetalhesWorkshop({ dados, id }) {
 
     if (response.isLoading || response.data === undefined || colaboradoresAtuais.isLoading || colaboradoresAtuais.data === undefined) return null;
 
+    if (!Array.isArray(response.data)) {
+        return <div>Dados inválidos</div>;
+      }
+
     const participantes = response.data.find((presenca) => presenca.workshop_id === id).colaboradores;
 
     function GraficoParticipantesWorkshop() {
