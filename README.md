@@ -29,4 +29,66 @@ Caso o usuário aperte o botão "DETALHES", aparecem mais informações sobre o 
 Caso o usuário aperte o botão "REGISTRAR WORKSHOP", aparece um formulário requerindo informações do nome, uma descrição, a data de realização e os colaboradores participantes desse workshop.
 ![image](https://github.com/user-attachments/assets/6a921ae4-4e20-4f71-8b76-b505f732e6b3)
 
+-------------------------------------------------------------------------------------------------------
 
+Para conseguir rodar esse projeto, primeiro pegue o código do github(usando "git clone https://github.com/LucasSilvaa0/fastSelectionProject.git"), depois precisamos dividir em 3 partes:
+
+Frontend: entre na pasta "/client", use o comando "npm i ." e depois o comando "npm run dev". Para entrar no site, vá ao url "http://localhost:3000/".
+
+Backend: use no terminal o comando "[System.Environment]::SetEnvironmentVariable("DB_CONNECTION_STRING", "server=localhost;port=3306;database=fastselectiondatabase;user=root;password=Admin#123;", "User")", depois entre na pasta "/server" e use o comando "dotnet run".
+
+(observação: para isso funcionar, precisa existir um usuário chamado root e senha "Admin#123" no seu MySQL)
+
+Banco de dados: para ser mais direto, vá ao MySQL workbench e rode os comandos:
+
+"""
+CREATE DATABASE fastSelectionDatabase;
+use fastSelectionDatabase;
+
+CREATE TABLE Colaborador (
+	id int PRIMARY KEY auto_increment,
+    nome VARCHAR(50),
+    data_inicial date,
+    data_final date
+);
+
+CREATE TABLE Workshop (
+	id int PRIMARY KEY auto_increment,
+    nome VARCHAR(50),
+    data_realizacao date,
+    descricao text
+);
+
+CREATE TABLE Presenca (
+	id_colaborador int,
+    id_workshop int,
+    PRIMARY KEY (id_colaborador, id_workshop),
+    CONSTRAINT FOREIGN KEY (id_colaborador) REFERENCES Colaborador(id),
+    CONSTRAINT FOREIGN KEY (id_workshop) REFERENCES Workshop(id)
+);
+"""
+
+Para fazer um povoamento das tabelas, use os comandos a seguir:
+
+"""
+
+INSERT INTO Colaborador(nome, data_inicial, data_final) VALUES ("Lucas", "2025-03-14", "0001-01-01");
+INSERT INTO Colaborador(nome, data_inicial, data_final) VALUES ("Helton", "2025-03-14", "0001-01-01");
+INSERT INTO Colaborador(nome, data_inicial, data_final) VALUES ("Pedro", "2025-03-15", "0001-01-01");
+INSERT INTO Colaborador(nome, data_inicial, data_final) VALUES ("Fast", "2025-03-16", "0001-01-01");
+
+INSERT INTO Workshop(nome, data_realizacao, descricao) VALUES ("A matemática e a tecnologia", "2025-03-15", "Os estudos da matemática trazem a descobertas de grandes algoritmos e teorias que são muito utilizadas para tecnologia. Vamos conhecer algumas?");
+INSERT INTO Workshop(nome, data_realizacao, descricao) VALUES ("Os estudos do dia a dia", "2025-03-16", "A tecnologia está sempre inovando, nunca pode ser parada!");
+INSERT INTO Workshop(nome, data_realizacao, descricao) VALUES ("A inteligência artificial e o futuro", "2025-03-17", "Com o avanço das IAs, como será o mundo daqui a décadas?");
+
+INSERT INTO Presenca(id_colaborador, id_workshop) VALUES (1,1);
+INSERT INTO Presenca(id_colaborador, id_workshop) VALUES (2,1);
+INSERT INTO Presenca(id_colaborador, id_workshop) VALUES (4,1);
+INSERT INTO Presenca(id_colaborador, id_workshop) VALUES (1,2);
+INSERT INTO Presenca(id_colaborador, id_workshop) VALUES (2,2);
+INSERT INTO Presenca(id_colaborador, id_workshop) VALUES (1,3);
+INSERT INTO Presenca(id_colaborador, id_workshop) VALUES (2,3);
+INSERT INTO Presenca(id_colaborador, id_workshop) VALUES (3,3);
+INSERT INTO Presenca(id_colaborador, id_workshop) VALUES (4,3);
+
+"""
