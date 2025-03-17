@@ -1,13 +1,22 @@
-# Etapa 1: Build da aplicação
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build  
-WORKDIR /app
-COPY . . 
-RUN dotnet restore
-RUN dotnet publish -c Release -o /app/published
+# Use a imagem base do SDK do .NET para build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
 
-# Etapa 2: Runtime da aplicação
-FROM mcr.microsoft.com/dotnet/aspnet:9.0  
+# Copie todos os arquivos do projeto para o contêiner
+COPY . .
+
+# Restaure as dependências do projeto
+RUN dotnet restore "server.csproj"
+
+# Publique o projeto
+RUN dotnet publish "server.csproj" -c Release -o /app/publish
+
+# Use a imagem base do runtime do .NET para a imagem final
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
-COPY --from=build /app/published .
-EXPOSE 8080
-CMD ["dotnet", "server.dll"]
+
+# Copie os arquivos publicados da etapa de build
+COPY --from=build /app/publish .
+
+# Defina o ponto de entrada para o aplicativo
+ENTRYPOINT ["dotnet", "server.dll"]
